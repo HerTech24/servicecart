@@ -1,17 +1,18 @@
 package com.cartService.carrito.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference; // <-- AGREGADO
 import jakarta.persistence.*;
-import java.util.Date; // Usamos java.util.Date para mapear a DATE/TIMESTAMP de Oracle
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "CARRITO") // Tabla de Oracle
+@Table(name = "CARRITO")
 public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_CARRITO") // Columna de ID en Oracle
+    @Column(name = "ID_CARRITO")
     private Long id;
 
     @Column(name = "ID_USUARIO", nullable = false)
@@ -21,10 +22,10 @@ public class Cart {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
 
-    @Column(name = "ESTADO") // Nueva columna según el script SQL
+    @Column(name = "ESTADO")
     private String estado;
 
-    @Column(name = "TOTAL") // Nueva columna según el script SQL
+    @Column(name = "TOTAL")
     private Double total;
 
     // Relación con los ítems (DETALLE_CARRITO)
@@ -32,6 +33,7 @@ public class Cart {
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY)
+    @JsonManagedReference // <-- Lado que SÍ debe ser serializado
     private List<CartItem> items = new ArrayList<>();
 
     public void addItem(CartItem item) {

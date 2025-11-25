@@ -1,18 +1,20 @@
 package com.cartService.carrito.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference; // <-- AGREGADO
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "DETALLE_CARRITO") // Tabla de Oracle
+@Table(name = "DETALLE_CARRITO")
 public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_DETALLE_CARRITO") // Columna de ID en Oracle
+    @Column(name = "ID_DETALLE_CARRITO")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_CARRITO", nullable = false) // FK en Oracle
+    @JoinColumn(name = "ID_CARRITO", nullable = false)
+    @JsonBackReference // <-- Lado que DEBE ser IGNORADO en la serialización
     private Cart cart;
 
     @Column(name = "ID_PRODUCTO", nullable = false)
@@ -21,7 +23,7 @@ public class CartItem {
     @Column(name = "CANTIDAD", nullable = false)
     private Integer cantidad;
 
-    @Column(name = "PRECIO_UNITARIO", nullable = false) // Columna requerida por el script SQL
+    @Column(name = "PRECIO_UNITARIO", nullable = false)
     private Double precioUnitario;
 
     // GETTERS / SETTERS
